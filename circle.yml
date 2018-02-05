@@ -10,7 +10,7 @@ dependencies:
     - bundle install
   override:
     - docker info
-    - docker build -t ci_test .
+    - docker build --rm=false -t ci_test .
 
 general:
   artifacts:
