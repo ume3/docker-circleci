@@ -1,13 +1,23 @@
 machine:
   timezone: Asia/Tokyo
+  ruby:
+    version: 2.3.0
   services:
     - docker
 
 dependencies:
+  pre:
+    - bundle install
   override:
     - docker info
     - docker build -t ci_test .
 
+general:
+  artifacts:
+    - build
+
 test:
-  override:
+  pre:
     - docker run -d -p 80:80 ci_test
+  override:
+    - bundle exec rspec
