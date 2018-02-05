@@ -3,3 +3,11 @@ machine:
   services:
     - docker
 
+dependencies:
+  override:
+    - docker info
+    - docker build -t ci_test .
+
+test:
+  override:
+    - docker run -d -p 80:80 ci_test
