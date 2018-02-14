@@ -18,6 +18,7 @@ general:
 
 test:
   pre:
-    - docker run -d -p 80:80 ci_test
+    - docker run --name serverspec -d -p 80:80 ci_test
   override:
-    - bundle exec rspec
+    - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' serverspec)" -- /bin/sh -c 'bundle exec rspec'
+

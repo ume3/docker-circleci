@@ -1,13 +1,12 @@
 require 'serverspec'
 require 'docker'
-
-image = Docker::Image.build_from_dir('./')
+require 'open3'
 
 set :backend, :docker
 set :os, family: 'RedHat', arch: 'x86_64'
-set :docker_image, image.id
-
-Excon.defaults[:ssl_verify_peer] = false
+if ENV['DOCKER_CONTAINER']
+  set :docker_container, ENV['DOCKER_CONTAINER']
+end
 
 # https://circleci.com/docs/docker#docker-exec
 if ENV['CIRCLECI']
