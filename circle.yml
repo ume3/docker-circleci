@@ -20,5 +20,5 @@ test:
   pre:
     - docker run --name serverspec -d -p 80:80 ci_test
   override:
-    - sudo lxc-attach -n "$(docker inspect --format '{{.Id}}' serverspec)" -- /bin/sh -c 'bundle exec rspec'
-
+    - CID=$(docker inspect --format "{{.Id}}" serverspec) &&
+      sudo lxc-attach -n $CID -f /var/lib/docker/containers/$CID/config.lxc -- bash -c 'bundle exec rspec'
