@@ -18,6 +18,7 @@ general:
 
 test:
   pre:
-    - docker run -d -p 80:80 ci_test
+    - docker run --name serverspec -d -p 80:80 ci_test
   override:
-    - bundle exec rspec
+    - CID=$(docker inspect --format "{{.Id}}" serverspec) &&
+      sudo lxc-attach -n $CID -f /var/lib/docker/containers/$CID/config.lxc -- bash -c 'ps auxf'
